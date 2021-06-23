@@ -30,3 +30,12 @@ export const updateItem = async (req, res) => {
     const updatedItem = await ItemModel.findByIdAndUpdate(_id, { ...item, _id }, { new: true })
     res.status(201).json(updatedItem)
 }
+
+export const deleteItem = async (req, res) => {
+    const { id: _id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).json({ message: "No item found with that ID" })
+
+    await ItemModel.findByIdAndRemove(_id)
+
+    res.status(204).json({ message: "Delete successfully" })
+}
